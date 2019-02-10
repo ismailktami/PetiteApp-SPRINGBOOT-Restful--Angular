@@ -1,10 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="utf-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/mystyle.css"/>
 </head>
-<body>
-
+<body ng-app="myApp" ng-controller="IndexController">
+<ul class="nav nav-pills">
+<li ng-class="{active:selectedmenu==m}"  ng-click="select(m)" class="clickable" ng-repeat="m in menu"><a >{{m}}</a></li>
+</ul>
+<div ng-if="selectedmenu=='Inscription'" ng-controller="InscriptionController">
+<div ng-include="'Inscription.html'">
+</div>
+</div>
+<div ng-if="selectedmenu=='Listes'" ng-controller="ListEtudiantController">
+<div ng-include="'listEtudiants.html'">
+</div>
+</div>
+<script type="text/javascript" src="js/angular.min.js" ></script>
+<script type="text/javascript" src="js/angular.js" ></script>
+<script type="text/javascript" src="js/myApp.js" ></script>
 </body>
 </html>

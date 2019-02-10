@@ -20,13 +20,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter{
 	private DataSource datasource;
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		/*PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		auth.inMemoryAuthentication().withUser("admin").password(encoder.encode("12345")).roles("PROF", "ADMIN");
-		auth.inMemoryAuthentication().withUser("prof1").password(encoder.encode("12345")).roles("PROF");
-		auth.inMemoryAuthentication().withUser("et1").password(encoder.encode("12345")).roles("ETUDIANT","PROF");
-		auth.inMemoryAuthentication().withUser("sco1").password(encoder.encode("12345")).roles("SCOLARITE");
-
-		*/
+		
+		
 		 auth.jdbcAuthentication().dataSource(datasource)
 			.usersByUsernameQuery("select u.username as principal, u.password as credentials,u.actived from users u where u.username=?" )
 			.authoritiesByUsernameQuery("select user_username as principal, roles_role as role from users_roles  where user_username=?")
@@ -34,9 +29,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter{
 	}
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().anyRequest().authenticated();
-		http.formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/index.html");
-		http.csrf().disable();
+		http.authorizeRequests().antMatchers("/css/**","/js/**").permitAll().anyRequest().authenticated();
+		http.formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/index.html");		http.csrf().disable();
 		http.exceptionHandling().accessDeniedPage("/403.html");
 	}	
 	

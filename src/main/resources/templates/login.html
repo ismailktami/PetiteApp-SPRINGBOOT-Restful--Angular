@@ -3,18 +3,37 @@
 xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
-<title>Insert title here</title>
+<title>Authentification</title>
+<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"
+th:href="@{/css/bootstrap.min.css}"
+/>
+<link rel="stylesheet" type="text/css" href="../static/css/mystyle.css"
+th:href="@{/css/mystyle.css}"
+/>
 </head>
 <body>
-
-<div>
+<div class="spacer col-md-6 col-sm-6 spacer ">
+<div class="panel panel-default">
+<div class="panel-heading">Authentification</div>
+<div class="panel-body">
 <form th:action="@{/login}" method="post" >
-<label>Username:</label>
-<input type="text" name="username" id="username" ></input>
-<label>Password:</label>
-<input type="password" id="password" name="password" ></input>
-<input type="submit" value="login"></input>
+
+<div class="form-group">
+<label class="control-label">Password:</label>
+<input class="form-control"  type="password" id="password" placeholder="Password" name="password" ></input>
+</div> 
+
+<div class="form-group">
+<label class="control-label">Username:</label>
+<input class="form-control" type="text" name="username" placeholder="Username" id="username" ></input>
+</div>
+
+
+
+<input class="btn btn-primary" type="submit" value="login"></input>
 </form>
+</div>
+</div>
 </div>
 </body>
 </html>

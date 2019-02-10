@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,8 +15,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dao.EtudiantRepository;
@@ -26,15 +31,23 @@ public class EtudiantRestService {
 @Autowired
 private EtudiantRepository etudiantRepository;
 @Secured(value= {"ROLE_ADMIN","ROLE_SCOLARITE"})
-@RequestMapping(value="/saveEtudiants",method=RequestMethod.GET)
-public Etudiant saveEtudiant(Etudiant e ) {
+@RequestMapping(value="/etudiants",method=RequestMethod.POST)
+public Object saveEtudiant(@RequestBody @Valid Etudiant e,BindingResult bindingResult ) {
+	if(bindingResult.hasErrors()) {
+		Map<String ,Object> errors=new HashMap<>();
+		errors.put("errors", true);
+		for(FieldError er:bindingResult.getFieldErrors()) {
+			errors.put(er.getField(),er.getDefaultMessage());
+		}
+		return errors;
+	}
 	return etudiantRepository.save(e);
 }
 
 
 
 @Secured(value= {"ROLE_ADMIN","ROLE_SCOLARITE","ROLE_PROF"})
-@RequestMapping(value="/etudiants")
+@RequestMapping( value="/listEtudiants")
 public Page<Etudiant> listEtudiant(int page,int size){
 	return etudiantRepository.findAll(new PageRequest(page,size));
 }
